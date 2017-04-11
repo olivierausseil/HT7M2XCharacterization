@@ -20,7 +20,7 @@ def LoRaBenchInit():
             bytesize=serial.EIGHTBITS,
             timeout=1
             )
-Å	print("Using USB0")
+	print ("Using USB0")
     except:
         ser = serial.Serial(
             port='/dev/ttyUSB0',
@@ -30,7 +30,7 @@ def LoRaBenchInit():
             bytesize=serial.EIGHTBITS,
             timeout=1
             )
-	print("Using USB1")
+	print ("Using USB1")
 
 
 def ComputeCrC (input_byte_array):
@@ -56,29 +56,29 @@ def LoRaBenchSendFrame(input_byte_array):
 
     global ser
 
+    #copy the input in list temporary for not touch to the input byte array because is re call a lot of times
+    input_byte_array_copy = list(input_byte_array)
+
     #insert len in first position
-    input_byte_array.insert(0, len(input_byte_array)+3 )
+    input_byte_array_copy.insert(0, len(input_byte_array_copy)+3 )
     #print ("len and array:" + str(input_byte_array))
 
+    crc = ComputeCrC (input_byte_array_copy)
 
-    crc = ComputeCrC (input_byte_array)
-
-
-    input_byte_array.append(crc & 0xFF)
-    input_byte_array.append(crc >> 8)
+    input_byte_array_copy.append(crc & 0xFF)
+    input_byte_array_copy.append(crc >> 8)
     #print input_byte_array
 
     #STX
-    input_byte_array.insert(0, STX )
+    input_byte_array_copy.insert(0, STX )
     #ETX
-    input_byte_array.append(ETX)
+    input_byte_array_copy.append(ETX)
 
     np.set_printoptions(formatter={'int':lambda x:hex(int(x))})
-    print( "Protocol command: " + str(np.array(input_byte_array)))
+    print( "Protocol command: " + str(np.array(input_byte_array_copy)))
 
     #send a frame to LoRaBench
-    ser.write(input_byte_array)
-
+    ser.write(input_byte_array_copy)
 
 
 def LoRaBenchReceiveExpectedChar( expected_byte ):
@@ -121,7 +121,7 @@ def LoRaBenchReceiveFrame( ):
 
     # receive STX
     if ( LoRaBenchReceiveExpectedChar( STX ) == False ):
-        print "No STX"
+        #print "No STX"
         return []
 
     # receive Length
@@ -146,7 +146,7 @@ def LoRaBenchReceiveFrame( ):
     # convert to ascii to int    ( see : http://www.linuxnix.com/pfotd-python-ord-function-examples/)
     rxbuffer=[ord(i) for i in rxbuffer]
     print ""
-    print( "Received frame: " + str(rxbuffer))
+    #print( "Received frame: " + str(rxbuffer))
     print( "Received frame: " + str(np.array(rxbuffer)))
 
     #for calculate the CRC, we need to add the length of frame
@@ -175,6 +175,7 @@ def LoRaBenchReceiveFrame( ):
     else:
         print ""
         print ("Valid CRC : " + str(hexcrc))
+        print ""
 
 
     # verify that last byte is ETX

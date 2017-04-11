@@ -5,7 +5,7 @@ import LoRaBench
 import numpy as np
 import argparse
 import RPi.GPIO as GPIO
-import logging
+from log import logger
 
 #GPIO initialization
 ledPin = 27
@@ -14,15 +14,17 @@ GPIO.setup(ledPin, GPIO.IN)
 
 #recover the date and hour, choose the format to acquisition
 #FORMAT = '%(asctime)s %(message)s',datefmt='%a %d %b %Y %H:%M:%S'
-logging.basicConfig(level = logging.INFO,
-                    format= '%(asctime)s %(message)s',
-                    datefmt='%a %d %b %Y %H:%M:%S')
-logging.Formatter.converter = time.gmtime
+#logging.basicConfig(level = logging.INFO,
+#                    format= '%(asctime)s %(message)s',
+#                    datefmt='%a %d %b %Y %H:%M:%S')
+#logging.Formatter.converter = time.gmtime
+
 
 # variable initialization
 maxword = 255
 maxbyte = 65535
 flagTime = 0
+flagSendFrame = 0
 timeDetection = 0
 endTimeDetection = 0
 
@@ -138,75 +140,80 @@ np.set_printoptions(formatter={'int':lambda x:hex(int(x))})
 print ( "Initial command: " + str(np.array(SendFrames)))
 #we go encode and create my frame to send
 LoRaBench.LoRaBenchInit( )
-LoRaBench.LoRaBenchSendFrame(SendFrames)
+a = LoRaBench.LoRaBenchSendFrame(SendFrames)
+print ( "sendFrames: " + str(np.array(a)))
+
 
 # after send frame, we wait an answer with LoRaBench (the start answer)
 rxbuffer = LoRaBench.LoRaBenchReceiveFrame()
 
 # analyse the start answer and if OK log date and time of start of transmission
 if ((rxbuffer[0] != 0x84 ) or (rxbuffer[1] != 0x00)):
-    print "error, the start answer is false "
+    logger.info("error, the start answer is false ")
+    print ''
 else:
-    print "start answer is ok"
-    #log
-
-#time.sleep(2)
-# we delete the buffer to 0 for the following
-rxbuffer = []
+    logger.info('start answer is ok')
+    print ''
 
 # check detection to the PIR and log date and time detection
 detection = GPIO.input(ledPin)
-timeout = time.time()
 
-while (1):
-    #detectionTemporary = GPIO.input(ledPin)
-    time.sleep(0.001)
+while True:
+    detectionTemporary = GPIO.input(ledPin)
+    time.sleep(0.005)
     if detection == 0 :
         if detection != GPIO.input(ledPin):
             # change of state
             detection = GPIO.input(ledPin)
             timeDetection = time.time()
-            logging.info(' : DETECTION !!!!!!')
+            logger.info('DETECTION ')
+            print ''
 
     if detection != 0:
         if detection != GPIO.input(ledPin) :
             # change of state
             detection = GPIO.input(ledPin)
             endTimeDetection = time.time()
-            logging.info(' : End of detection')
+            logger.info('FIN DETECTION')
+            print ''
             flagTime = 1
 
 
     if flagTime == 1 :
+        flagTime = 0
         finalTime = endTimeDetection - timeDetection
-        print ("detection time : "+ "%.2f" % finalTime)
+        logger.info('detection time : %.2f ' %finalTime)
         print ''
-        break
 
 
+    # analyse the answer of LoRaBench and if OK log date and time of end of transmission
+    rxbuffer = LoRaBench.LoRaBenchReceiveFrame()
+    #check if the buffer is empty
+    if (len(rxbuffer)!= 0):
+        #check if is the answer of start
+        if (rxbuffer[0] == 0x84 ):
+            if (rxbuffer[1] == 0x00 ):
+                logger.info('start answer is ok')
+                print ''
+            else:
+                logger.info("error, the start answer is false : " + str(rxbuffer))
+                print ''
 
-    if (time.time() - timeout) > 5:
-        break
+        #check if is the answer of start
+        if (rxbuffer[0] == 0x80 ):
+            flagSendFrame = 1
+            if (rxbuffer[1] == 0x04 ):
+                logger.info('stop answer is ok')
+                print ''
+            else:
+                logger.info("error, the stop answer is false : " + str(rxbuffer))
+                print ''
 
-rxbuffer = LoRaBench.LoRaBenchReceiveFrame()
-print rxbuffer
-
-#after send frame, we wait an answer with LoRaBench (the stop answer)
-#rxbuffer = LoRaBench.LoRaBenchReceiveFrame()
-
-# analyse the end answer and if OK log date and time of end of transmission
-if ((rxbuffer[0] != 0x80 ) or (rxbuffer[1] != 0x04)):
-    print ("error, the stop answer is false : " + str(rxbuffer))
-else:
-    print "stop answer is ok"
-
-
-#while (1):
-#    rxbuffer = LoRaBench.LoRaBenchReceiveFrame()
-#    if ( (rxbuffer[0] == 0x80) & (rxbuffer[1] == 0x04) ):
-#        break
-
-#if rxbuffer != None:
-    # display answer
-#else:
-    # display no reception error
+    # launch another cycle of emission
+    if flagSendFrame == 1 :
+        time.sleep(5)
+        flagSendFrame = 0
+        print "--------------------------------------------------------------------------------------"
+        print ( "sendFrames: " + str(np.array(SendFrames)))
+        print ""
+        LoRaBench.LoRaBenchSendFrame(SendFrames)

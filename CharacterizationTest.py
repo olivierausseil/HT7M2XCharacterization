@@ -131,7 +131,7 @@ SendFrames.append(delay)
 
 #print ( "Initial command frame: " + SendFrames)
 
- # http://stackoverflow.com/questions/9448029/print-an-integer-array-as-hexadecimal-numbers
+# http://stackoverflow.com/questions/9448029/print-an-integer-array-as-hexadecimal-numbers
 np.set_printoptions(formatter={'int':lambda x:hex(int(x))})
 #np.set_printoptions(formatter={'int':hex})
 #np.set_printoptions(formatter={'int': '{: 02x }'.format})

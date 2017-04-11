@@ -13,13 +13,14 @@ def LoRaBenchInit():
     global ser
     try:
         ser = serial.Serial(
-            port='/dev/ttyUSB1',
+            port='/dev/ttyUSB0',
             baudrate = 9600,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
             bytesize=serial.EIGHTBITS,
             timeout=1
             )
+Å	print("Using USB0")
     except:
         ser = serial.Serial(
             port='/dev/ttyUSB0',
@@ -29,6 +30,7 @@ def LoRaBenchInit():
             bytesize=serial.EIGHTBITS,
             timeout=1
             )
+	print("Using USB1")
 
 
 def ComputeCrC (input_byte_array):

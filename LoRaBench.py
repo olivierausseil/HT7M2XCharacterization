@@ -4,6 +4,7 @@ import serial
 import crcmod
 import binascii
 import numpy as np
+import log
 
 STX = 0x02
 ETX = 0x03
@@ -116,6 +117,9 @@ def LoRaBenchReceiveFrame( ):
 
     global ser
 
+    if (ser.inWaiting() < 5):
+        return 0
+
     rxbufferlen = 0
     rxbuffer = []
 
@@ -151,8 +155,9 @@ def LoRaBenchReceiveFrame( ):
 
     #for calculate the CRC, we need to add the length of frame
     rxbuffer.insert(0, rxbufferlen )
-    # we calculate the lenght of rxbuffer again because the size has change
+    # we add the lenght of rxbuffer again because the size has change
     rxbufferlen = rxbufferlen + 1
+    print( "Rx buffer len : " + str(rxbufferlen))
 
     # verify CRC16
     #to calculate the CRC the ETX byte and the CRC bytes aren't used
@@ -185,6 +190,27 @@ def LoRaBenchReceiveFrame( ):
     #else :
         #print ""
         #print "ETX reception success"
+
+    #Check if the message inside buffer is the start TX answer or the stop TX answer
+    if (rxbuffer[rxbufferlen - 5] == 0x84 ):
+        if (rxbuffer[rxbufferlen - 4] == 0x00 ):
+            #logger.info('start answer is ok')
+            print 'start answer is ok'
+            print ''
+        else:
+            #logger.info("error, the start answer is false : " + str(rxbuffer))
+            print ''
+
+    #check if is the answer of start
+    if (rxbuffer[rxbufferlen - 5] == 0x80 ):
+        if (rxbuffer[rxbufferlen - 4] == 0x04 ):
+            #logger.info('stop answer is ok')
+            print 'stop answer is ok'
+            print ''
+        else:
+            #logger.info("error, the stop answer is false : " + str(rxbuffer))
+            print ''
+
 
     return rxbuffer[1:-3]
     #return rxbuffer[]

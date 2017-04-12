@@ -143,18 +143,6 @@ LoRaBench.LoRaBenchInit( )
 a = LoRaBench.LoRaBenchSendFrame(SendFrames)
 print ( "sendFrames: " + str(np.array(a)))
 
-
-# after send frame, we wait an answer with LoRaBench (the start answer)
-rxbuffer = LoRaBench.LoRaBenchReceiveFrame()
-
-# analyse the start answer and if OK log date and time of start of transmission
-if ((rxbuffer[0] != 0x84 ) or (rxbuffer[1] != 0x00)):
-    logger.info("error, the start answer is false ")
-    print ''
-else:
-    logger.info('start answer is ok')
-    print ''
-
 # check detection to the PIR and log date and time detection
 detection = GPIO.input(ledPin)
 
@@ -188,32 +176,12 @@ while True:
 
     # analyse the answer of LoRaBench and if OK log date and time of end of transmission
     rxbuffer = LoRaBench.LoRaBenchReceiveFrame()
-    #check if the buffer is empty
-    if (len(rxbuffer)!= 0):
-        #check if is the answer of start
-        if (rxbuffer[0] == 0x84 ):
-            if (rxbuffer[1] == 0x00 ):
-                logger.info('start answer is ok')
-                print ''
-            else:
-                logger.info("error, the start answer is false : " + str(rxbuffer))
-                print ''
-
-        #check if is the answer of start
-        if (rxbuffer[0] == 0x80 ):
-            flagSendFrame = 1
-            if (rxbuffer[1] == 0x04 ):
-                logger.info('stop answer is ok')
-                print ''
-            else:
-                logger.info("error, the stop answer is false : " + str(rxbuffer))
-                print ''
 
     # launch another cycle of emission
-    if flagSendFrame == 1 :
-        time.sleep(5)
-        flagSendFrame = 0
-        print "--------------------------------------------------------------------------------------"
-        print ( "sendFrames: " + str(np.array(SendFrames)))
-        print ""
-        LoRaBench.LoRaBenchSendFrame(SendFrames)
+    if rxbuffer != 0 :
+        if rxbuffer[0] == 0x80:
+            time.sleep(5)
+            print "--------------------------------------------------------------------------------------"
+            print ( "sendFrames: " + str(np.array(SendFrames)))
+            print ""
+            LoRaBench.LoRaBenchSendFrame(SendFrames)

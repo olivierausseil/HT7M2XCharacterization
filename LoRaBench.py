@@ -156,8 +156,8 @@ def LoRaBenchReceiveFrame( ):
     #for calculate the CRC, we need to add the length of frame
     rxbuffer.insert(0, rxbufferlen )
     # we add the lenght of rxbuffer again because the size has change
-    rxbufferlen = rxbufferlen + 1
-    print( "Rx buffer len : " + str(rxbufferlen))
+    rxbufferlen += 1
+    #print( "Rx buffer len : " + str(rxbufferlen))
 
     # verify CRC16
     #to calculate the CRC the ETX byte and the CRC bytes aren't used

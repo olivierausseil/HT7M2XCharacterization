@@ -23,8 +23,9 @@ GPIO.setup(ledPin, GPIO.IN)
 # variable initialization
 maxword = 255
 maxbyte = 65535
+nbmaxcpt = 1000000
 flagTime = 0
-flagSendFrame = 0
+CptCycle = 0
 timeDetection = 0
 endTimeDetection = 0
 
@@ -36,6 +37,7 @@ parser.add_argument('-FF', action='store', dest='frequencyOffset')
 parser.add_argument('-NN', action='store', dest='numberOfPackets')
 parser.add_argument('-LL', action='store', dest='lenghtOfPackets')
 parser.add_argument('-DD', action='store', dest='delay')
+parser.add_argument('-CT', action='store', dest='cptmax')
 results = parser.parse_args()
 
 SendFrames = [0x04] #identification to SendFrames LoraBench datasheet
@@ -131,6 +133,18 @@ if delay > maxword:
 
 SendFrames.append(delay)
 
+#CPTMAX -------------------------------------------------
+if None == results.cptmax:
+    Cptmax = int(10) #default value
+else:
+    Cptmax = int(results.cptmax,16)
+
+if Cptmax < 0:
+    Cptmax = 0
+
+if Cptmax > nbmaxcpt:
+    Cptmax = nbmaxcpt
+
 #print ( "Initial command frame: " + SendFrames)
 
 # http://stackoverflow.com/questions/9448029/print-an-integer-array-as-hexadecimal-numbers
@@ -146,7 +160,7 @@ print ( "sendFrames: " + str(np.array(a)))
 # check detection to the PIR and log date and time detection
 detection = GPIO.input(ledPin)
 
-while True:
+while CptCycle < Cptmax:
     detectionTemporary = GPIO.input(ledPin)
     time.sleep(0.005)
     if detection == 0 :
@@ -181,6 +195,7 @@ while True:
     if rxbuffer != 0 :
         if rxbuffer[0] == 0x80:
             time.sleep(5)
+            CptCycle += 1
             print "--------------------------------------------------------------------------------------"
             print ( "sendFrames: " + str(np.array(SendFrames)))
             print ""

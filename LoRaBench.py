@@ -3,11 +3,14 @@
 import serial
 import crcmod
 import binascii
+import time
 import numpy as np
-import log
+#import CharacterizationTest
+from log import logger
 
 STX = 0x02
 ETX = 0x03
+
 
 def LoRaBenchInit():
     # initialization of serial
@@ -76,7 +79,7 @@ def LoRaBenchSendFrame(input_byte_array):
     input_byte_array_copy.append(ETX)
 
     np.set_printoptions(formatter={'int':lambda x:hex(int(x))})
-    print( "Protocol command: " + str(np.array(input_byte_array_copy)))
+    #print( "Protocol command: " + str(np.array(input_byte_array_copy)))
 
     #send a frame to LoRaBench
     ser.write(input_byte_array_copy)
@@ -137,7 +140,7 @@ def LoRaBenchReceiveFrame( ):
     else:
         rxbufferlen = ord(rxbuffer[0]) # byte to int conversion
         print ""
-        print ( "Answer Lenght is: " + str(rxbufferlen) )
+        #print ( "Answer Lenght is: " + str(rxbufferlen) )
 
     # rxbuffer is theorically the length of actual data + 3 (length itself + 2 bytes CRC)
     # however we already have received length, soi we should ask for one byte less
@@ -149,9 +152,9 @@ def LoRaBenchReceiveFrame( ):
 
     # convert to ascii to int    ( see : http://www.linuxnix.com/pfotd-python-ord-function-examples/)
     rxbuffer=[ord(i) for i in rxbuffer]
-    print ""
+    #print ""
     #print( "Received frame: " + str(rxbuffer))
-    print( "Received frame: " + str(np.array(rxbuffer)))
+    #print( "Received frame: " + str(np.array(rxbuffer)))
 
     #for calculate the CRC, we need to add the length of frame
     rxbuffer.insert(0, rxbufferlen )
@@ -179,8 +182,8 @@ def LoRaBenchReceiveFrame( ):
         return []
     else:
         print ""
-        print ("Valid CRC : " + str(hexcrc))
-        print ""
+        #print ("Valid CRC : " + str(hexcrc))
+        #print ""
 
 
     # verify that last byte is ETX
@@ -192,24 +195,7 @@ def LoRaBenchReceiveFrame( ):
         #print "ETX reception success"
 
     #Check if the message inside buffer is the start TX answer or the stop TX answer
-    if (rxbuffer[rxbufferlen - 5] == 0x84 ):
-        if (rxbuffer[rxbufferlen - 4] == 0x00 ):
-            #logger.info('start answer is ok')
-            print 'start answer is ok'
-            print ''
-        else:
-            #logger.info("error, the start answer is false : " + str(rxbuffer))
-            print ''
 
-    #check if is the answer of start
-    if (rxbuffer[rxbufferlen - 5] == 0x80 ):
-        if (rxbuffer[rxbufferlen - 4] == 0x04 ):
-            #logger.info('stop answer is ok')
-            print 'stop answer is ok'
-            print ''
-        else:
-            #logger.info("error, the stop answer is false : " + str(rxbuffer))
-            print ''
 
 
     return rxbuffer[1:-3]

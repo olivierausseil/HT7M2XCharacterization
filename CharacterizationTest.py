@@ -6,6 +6,7 @@ import numpy as np
 import argparse
 import RPi.GPIO as GPIO
 from log import logger
+import PIRlibrary as PIR
 
 #GPIO initialization
 ledPin = 27
@@ -26,7 +27,7 @@ maxbyte = 65535
 nbmaxcpt = 1000000
 flagDetectionOrNot = 0
 CptCycle = 1
-
+endDetection = 0
 
 #log variable
 timeDetection = 0
@@ -152,6 +153,10 @@ if Cptmax > nbmaxcpt:
 
 #print ( "Initial command frame: " + SendFrames)
 
+
+#set parameter to the PIR sensor via I2C, we use PIR library
+PIR.SetPIRparameters (16,  0, 50)
+
 # http://stackoverflow.com/questions/9448029/print-an-integer-array-as-hexadecimal-numbers
 np.set_printoptions(formatter={'int':lambda x:hex(int(x))})
 #np.set_printoptions(formatter={'int':hex})
@@ -170,30 +175,8 @@ logger.info('Cycle ' + str (CptCycle))
 while True:
     time.sleep(0.001)
 
-    #detection to the sensor PIR
-    if detection == 0 :
-        if detection != GPIO.input(ledPin):
-
-            # log
-            deltaTimeStart = time.time() - startDetection
-            deltaTimeStart = round(deltaTimeStart,3)
-            logger.info('deltaTimeStart ' + str (deltaTimeStart))
-
-            # for indicate if we have a detection or not by the sensor when a frame is send by LoRaBench
-            flagDetectionOrNot = 1
-
-            # change of state
-            detection = GPIO.input(ledPin)
-
-    #detection to the sensor PIR
-    if detection != 0:
-        if detection != GPIO.input(ledPin) :
-
-            #log
-            stopDetection = time.time()
-
-            # change of state
-            detection = GPIO.input(ledPin)
+    #check if the PIR sensor detect passage and store the value in a flag
+    flagDetectionOrNot,timetest,endDetection = PIR.PIRdetection()
 
 
     # analyse the answer of LoRaBench and if OK log date and time of end of transmission
@@ -218,7 +201,7 @@ while True:
                 if flagDetectionOrNot == 1:
                     deltaTimeStop = time.time() - stopDetection
                     deltaTimeStop = round(deltaTimeStop,3)
-                    logger.info('deltaTimeStop ' + str (deltaTimeStop))
+                    #logger.info('deltaTimeStop ' + str (deltaTimeStop))
                 else:
                     logger.info('No detection during this cycle')
                 #print 'stop answer is ok'
@@ -227,25 +210,31 @@ while True:
                 logger.info("error, the stop answer is false : " + str(rxbuffer))
                 print ''
 
-            flagDetectionOrNot = 0
-            time.sleep(2)
 
-            # we test the number of cycle in comparaison to the user ask
-            if (CptCycle == Cptmax):
-                print '-------------- THE END -------------------'
-                break
+            endDetection = True
+            time.sleep(0.1)
 
-            # a new cycle begin
-            CptCycle += 1
-            print ""
-            print ""
+    #print ('endDetection',endDetection)
+    #wait, if a detection occur, that the signal by the sensor send a end detection
+    if (endDetection == True and flagDetectionOrNot == False):
+        endDetection = False
+        flagDetectionOrNot = 0
+        # we test the number of cycle in comparaison to the user ask
+        if (CptCycle == Cptmax):
+            print '-------------- THE END -------------------'
+            break
 
-            #log
-            logger.info('Cycle ' + str (CptCycle))
+        # a new cycle begin
+        CptCycle += 1
+        print ""
+        print ""
+        time.sleep(2)
+        #log
+        logger.info('Cycle ' + str (CptCycle))
 
-            print "--------------------------------------------------------------------------------------"
-            #print ( "sendFrames: " + str(np.array(SendFrames)))
-            #print ""
 
-            #launch a new send frame
-            LoRaBench.LoRaBenchSendFrame(SendFrames)
+        print "--------------------------------------------------------------------------------------"
+        #print ( "sendFrames: " + str(np.array(SendFrames)))
+
+        #launch a new send frame
+        LoRaBench.LoRaBenchSendFrame(SendFrames)

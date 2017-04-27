@@ -1,0 +1,21 @@
+{
+    "nom" : "GainRamp",
+
+    "parameter" :
+    [
+        {
+            "sensitivityGain" : 32,
+            "sensitivityTrigger" : 0,
+            "triggerTime" : 10,
+            "timeout" : 5,
+            "nbOfLoop" : 1000
+        },
+        {
+            "sensitivityGain" : 16,
+            "sensitivityTrigger" : 0,
+            "triggerTime" : 10,
+            "timeout" : 5,
+            "nbOfLoop" : 1000,
+        }
+    ]
+}

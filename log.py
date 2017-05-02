@@ -14,24 +14,24 @@ formatter4 = logging.Formatter("%(asctime)s - %(message)s","%H:%M:%S")
 
 #creation of handler who permit to separate the different log level
 #handler_critic = logging.FileHandler("critic.log", mode="a", encoding="utf-8")
-handler_info = logging.FileHandler("/home/pi/logFile/Characterization.csv", mode="a", encoding="utf-8")
+handler_debug = logging.FileHandler("/home/pi/logFile/Characterization.csv", mode="a", encoding="utf-8")
 #handler_warning = logging.FileHandler("warning.log", mode="a", encoding="utf-8")
 
 #set the format of message to handler
 #handler_critic.setFormatter(formatter)
-handler_info.setFormatter(formatter4)
+handler_debug.setFormatter(formatter)
 #handler_warning.setFormatter(formatter)
 
 #set level to handler
-handler_info.setLevel(logging.INFO)
+handler_debug.setLevel(logging.DEBUG)
 #handler_critic.setLevel(logging.CRITICAL)
 #handler_warning.setLevel(logging.WARNING)
 
 # We create an object with logger type, we assigns a minimum level (logging.INFO) and use with the handler created
 logger = logging.getLogger()
-logger.setLevel(logging.INFO) # ***
+logger.setLevel(logging.DEBUG) # ***
 #logger.addHandler(handler_critic)
-logger.addHandler(handler_info)
+logger.addHandler(handler_debug)
 #logger.addHandler(handler_warning)
 
 #Permit to transmit log message

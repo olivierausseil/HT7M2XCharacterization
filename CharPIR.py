@@ -1,75 +1,64 @@
-# The skeleton for characterize the PIR sensor
-shiftStart = 1
-shiftStop = -10
-while True:  # utiliser une boucle for
-    if (userNewParameter == ): # maybe useless
-        PIR_config()
-        RF_sender_config()
+#!/usr/bin/python2
 
-    nbOfLoop = Ask Nb_of_loop ? # utiliser un for
+import time as time
+from log import logger
+import PIRlibrary as PIR
+import RF_transmitter as RF
 
-    while (nbOfLoop == CptOfLoop): # Utiliser une boucle for
-        if not TxRFframe ():
-            LogDebug('numero parametre', 'cptloop',notsent)
-        else:
-            tsTxRf = time.time() + shiftStart # for log the delta time
-            waitReceiveFrame = True
-            if not PIRdetection (timeout):
-                LogDebug('numero parametre','cptloop', timeout)
-                while waitReceiveFrame:
-                    if waitReceiveFrame:
-                        if endRfFrame():
-                            waitReceiveFrame = False
+shiftStart = 0.001
+shiftStop = -0.010
+nbOfSetting = 1
+sensitivityGain = 16
+sensitivityTrigger = 0
+triggerTime = 10
+
+for i in xrange(nbOfSetting):  # utiliser une boucle for
+
+    PIR.SetPIRparameters(sensitivityGain,  sensitivityTrigger, triggerTime)
+    RF.RfInit()
+    #RF_sender_config()  # useless
+
+    nbOfLoop = 20000
+    timeout_TxFrame = 2
+    timeoutPIRdetection = 5
+    frameToSend = [0x04]
+    for i in xrange(nbOfLoop):
+        print 'Cycle', i
+        try:
+            if not RF.TxRFframe (frameToSend, timeout_TxFrame):
+                #LogDebug('numero parametre', 'cptloop',timeoutnotsent)
+                logger.debug("nb of loop: %d , timeout_TxFrame : %d", i, timeout_TxFrame)
             else:
-                tsDetect = time.time()
-                waitDetection = True
+                tsTxRf = time.time() + shiftStart # for log the delta time
                 waitReceiveFrame = True
-                while waitDetection or waitReceiveFrame:
-                    if waitDetection:
-                        if PIRendDetection():
-                            tsEndDetect = time.time()
-                            waitDetection = False
-                    if waitReceiveFrame:
-                        if endRfFrame():
-                            tsEndRfFrame = time.time() + shiftStop
+                if not PIR.PIRdetection (timeoutPIRdetection):
+                    #LogDebug('numero parametre','cptloop', timeout_PIRdetection)
+                    logger.debug("nb of loop: %d , timeoutPIR : %d",i, timeoutPIRdetection )
+                    while waitReceiveFrame:
+                        if RF.EndRfFrame():
+                            'print EndRfFrame ok'
                             waitReceiveFrame = False
-                    time.sleep(0.001)
+                else:
+                    tsDetect = time.time()
+                    waitDetection = True
+                    waitReceiveFrame = True
+                    while waitDetection or waitReceiveFrame:
+                        if waitDetection:
+                            if PIR.PIRendDetection():
+                                tsEndDetect = time.time()
+                                waitDetection = False
+                        if waitReceiveFrame:
+                            if RF.EndRfFrame():
+                                tsEndRfFrame = time.time() + shiftStop
+                                waitReceiveFrame = False
 
-                deltaDetectRf = tsDetect - tsTxRf
-                deltaEndDetectRf = tsEndDetect - tsEndRfFrame
-                logEvent('numero parametre' , 'cptloop', deltaDetectRf, deltaDetectRf)
+                        time.sleep(0.001)
 
-        time.sleep(2)
-        CptOfLoop += 1
+                    deltaDetectRf = tsDetect - tsTxRf
+                    deltaEndDetectRf = tsEndDetect - tsEndRfFrame
 
-
-
-
-
-
-
-
-
-
-# To the begining of the program, we need to determine the different parameter
-#   for the different module use for the Characterization.
-# Also, after a number of cycle test with parameter, we can change,
-#   if a user want, the parameter of the different module.
-
-
-# Call a function to send radio wave frame on the RF transmitter.
-# TxRFframe can be send a serial ask to, in our case, the LoRaBench and recover this answer know if the wave emission are OK (return of the function).
-# After some test on the LoRaBench, we know that the emission wave begin beforethe end of the serial answer (1.5ms). Like this time is very short, we consider that two moment occur at the same moment.
-
-# After the radio emission, we wait a detection by the sensor.
-# The function return if the detection occur or not.
-# A timeout is necessary if the sensor does not capture anything.
-# A funtion return a log in any case to know the sensor behavior.
-
-
-# if the flag is high, we don't need anymore to use the PIRendDetection function
-    # This function return two parameter, the first simply to tell the end of detection,
-    #   the other, a sflag for check after if the end detection occur before the LoRaBench answer
-
-    # This function return two parameter, the first simply to tell that the frame is receive by the serial bus,
-    #   the other, a flag for check after if the the LoRaBench answer occur before end detection
+                    #logEvent('numero parametre' , 'cptloop', deltaDetectRf, deltaDetectRf)
+                    logger.info('nb of loop : %d , delta start : %f, delta stop : %f',i, deltaDetectRf, deltaEndDetectRf)
+                    time.sleep(2)
+        except Exception as reason:
+            logger.error(reason)

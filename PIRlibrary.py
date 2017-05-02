@@ -29,7 +29,7 @@ def SetPIRparameters (sensitivityGain,  sensitivityTrigger, triggerTime ):
         sensitivityGain = 31
 
     # from there, sensitivity takes a value between 0 and 31 in all cases
-    print ("sensitivity Gain is: " + str(sensitivityGain) )
+    #print ("sensitivity Gain is: " + str(sensitivityGain) )
 
 
 
@@ -47,7 +47,7 @@ def SetPIRparameters (sensitivityGain,  sensitivityTrigger, triggerTime ):
 
 
     # from there, sensitivity takes a value between 0 and 7 in all cases
-    print ("sensitivity Trigger is: " + str(sensitivityTrigger) )
+    #print ("sensitivity Trigger is: " + str(sensitivityTrigger) )
 
     # sum of the two sensitivity
     sensitivity = (sensitivityTrigger << 5) +  sensitivityGain
@@ -56,7 +56,7 @@ def SetPIRparameters (sensitivityGain,  sensitivityTrigger, triggerTime ):
         sensitivity = sensitivityGain
     if sensitivityGain == 0 :
         sensitivity = sensitivityTrigger
-    print sensitivity
+    #print sensitivity
     #-------------- end sensitivity ---------
 
     #---------------TriggerTime -------------
@@ -79,7 +79,7 @@ def SetPIRparameters (sensitivityGain,  sensitivityTrigger, triggerTime ):
     #----------------end TriggerTIme --------
     # -------------- end parser  ------------
 
-    time.sleep(0.1)
+    time.sleep(0.01)
 
     # change the trigger time of detection (see datasheet_HT7Mx6 __ p15 _ 3.Trig Time Interval )
     data_time = bus.read_i2c_block_data(0x4c, 3, 2)
@@ -89,62 +89,45 @@ def SetPIRparameters (sensitivityGain,  sensitivityTrigger, triggerTime ):
 
     #print ( "data_time change : " + str(data_time))
     bus.write_i2c_block_data(0x4c, 3, data_time)
-    print ( "trigger time  : " + str(data_time[1]))
+    #print ( "trigger time  : " + str(data_time[1]))
 
-    time.sleep(0.1)
+    time.sleep(0.01)
 
     # change of trigger parameter (see datasheet_HT7Mx6 __ p12 _ 1. Sensor Config Register)
 
     data = bus.read_i2c_block_data(0x4c, 1, 2)
-
-
     data[1] = sensitivity
     bus.write_i2c_block_data(0x4c, 1, data)
-    time.sleep(0.5)
+    time.sleep(0.1)
     data = bus.read_i2c_block_data(0x4c, 1, 2)
-    print ( "sensitivity: " + str(data[1]))
+    #print ( "sensitivity: " + str(data[1]))
 
 
-    # read the value of the sensor when switch on detection or not
-    readValue = bus.read_i2c_block_data(0x4c,8,2)
-    readValue = map(int, readValue)
+def PIRdetection(timeout = 5):
+    refTimeout = time.time()
+    waitDetection = True
+    flagTimeout = False
+    while not flagTimeout and waitDetection:
+        if GPIO.input(ledPin):
+            if timeout <= time.time() - refTimeout:
+                flagTimeout = True
+        else :
+            if waitDetection:
+                print 'DETECTION'
+                waitDetection = False
 
-def PIRdetection():
-    global detection
-    endDetection = False
-    stopDetection = 0;
+        time.sleep (0.001)
 
-    time.sleep (0.001)
-
-    detectionTemporary = GPIO.input(ledPin)
-
-    #detection to the sensor PIR
-    if detection == 0 :
-        if detection != detectionTemporary:
-
-            # log
-            #deltaTimeStart = time.time() - startDetection
-            #deltaTimeStart = round(deltaTimeStart,3)
-            #logger.info('deltaTimeStart ' + str (deltaTimeStart))
-            print ('DETECTION')
-            endDetection = False
-            # change of state
-            detection = detectionTemporary
-
-    #end detection to the sensor PIR
-    if detection != 0:
-        if detection != detectionTemporary :
-
-            #log
-            stopDetection = time.time()
-
-            # change of state
-            #detection = GPIO.input(ledPin)
-            print ('END DETECTION')
-            detection = detectionTemporary
-            endDetection = True
-
-    if detection == 0:
-        return (False, stopDetection, endDetection)
+    if not waitDetection:
+        return True
     else:
-        return (True , stopDetection, endDetection)
+        if flagTimeout:
+            return False
+
+def PIRendDetection():
+
+    if GPIO.input(ledPin):
+        print 'END DETECTION'
+        return True
+    else:
+        return False

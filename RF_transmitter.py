@@ -6,11 +6,17 @@ import binascii
 import time
 import numpy as np
 from log import logger
+import json
 
 maxword = 255
 maxbyte = 65535
 STX = 0x02
 ETX = 0x03
+
+json_file = 'testConfigFile.json'
+json_data = open(json_file)
+data = json.load(json_data)
+json_data.close()
 
 def RfInit():
     # initialization of serial
@@ -36,15 +42,38 @@ def RfInit():
             )
 	#print ("Using USB1")
 
-def CreateFrame(sendFrame):
+def CreateFrame():
+    header,spreadingFactor,power,frequencyOffset,numberOfPackets,lenghtOfPackets,delay = 0,0,0,0,0,0,0
+    sendFrame = []
+    for keys,value in data['frameToSend'].items():
+        if keys == 'header':
+            header = value
+        if keys == 'spreadingFactor':
+            spreadingFactor = value
+            #print 'spreadingFactor',spreadingFactor
+        if keys == 'power':
+            power = value
+            #print 'power',power
+        if keys == 'frequencyOffset':
+            frequencyOffset = value
+            #print 'frequencyOffset',frequencyOffset
+        if keys == 'numberOfPackets':
+            numberOfPackets = value
+            #print 'numberOfPackets',numberOfPackets
+        if keys == 'lenghtOfPackets':
+            lenghtOfPackets = value
+            #print 'lenghtOfPackets',lenghtOfPackets
+        if keys == 'delay':
+            delay = value
+            #print 'delay',delay"""
 
-    sendFrame = [0x04] #identification to sendFrames LoraBench datasheet
 
+    sendFrame.append(header)
     # SPREADING FACTOR -----------------------
-    #if None ==  spreadingFactor:
-    spreadingFactor = int(12) #default value
-    #else:
-    #    spreadingFactor = int( spreadingFactor,16)
+    if spreadingFactor == 0:
+        spreadingFactor = int(12) #default value
+    else:
+        spreadingFactor
 
     # manage argument limits (0-255) (see datasheet_LoRaBench_160617_A05_FirmwareSpecification_EN __ p6 __ Command sendFrames)
     if spreadingFactor < 0:
@@ -52,13 +81,14 @@ def CreateFrame(sendFrame):
 
     if spreadingFactor > maxword:
         spreadingFactor = maxword
+    #print 'spreadingFactor',spreadingFactor
     sendFrame.append(spreadingFactor)
 
     # POWER ------------------------------------------
-    #if None ==  power:
-    power = int(14) #default value
-    #else:
-    #    power = int( power,16)
+    if power == 0:
+        power = int(14) #default value
+    else:
+        power
 
     # manage argument limits (0-255) (see datasheet_LoRaBench_160617_A05_FirmwareSpecification_EN __ p6 __ Command sendFrames)
     if power < 0:
@@ -66,46 +96,47 @@ def CreateFrame(sendFrame):
 
     if power > maxword:
         power = maxword
+    #print 'power',power
     sendFrame.append(power)
 
     # FREQUENCY OFFSET -------------------------------------
-    #if None ==  frequencyOffset:
-    frequencyOffset = int(5100)
-    #else:
-    #    frequencyOffset = int( frequencyOffset,16)
+    if frequencyOffset == 0:
+        frequencyOffset = int(5100)
+    else:
+        frequencyOffset
 
     if frequencyOffset < 0:
         frequencyOffset = 0
 
     if frequencyOffset > maxbyte:
         frequencyOffset = maxbyte
-
+    #print 'frequencyOffset',frequencyOffset
     # cut in two the data
     sendFrame.append(frequencyOffset >> 8) # MSB
     sendFrame.append(frequencyOffset & 0xFF) # LSB
 
 
     # NUMBER OF PACKETS -------------------------------------
-    #if None ==  numberOfPackets:
-    numberOfPackets = int(1)
-    #else:
-    #    numberOfPackets = int( numberOfPackets,16)
+    if numberOfPackets == 0:
+        numberOfPackets = int(1)
+    else:
+        numberOfPackets
 
     if numberOfPackets < 0:
         numberOfPackets = 0
 
     if numberOfPackets > maxbyte:
         numberOfPackets = maxbyte
-
+    #print 'numberOfPackets',numberOfPackets
     # cut in two the data
     sendFrame.append(numberOfPackets >> 8) # MSB
     sendFrame.append(numberOfPackets & 0xFF) # LSB
 
     # LENGHT OF PACKETS -------------------------------------
-    #if None ==  lenghtOfPackets:
-    lenghtOfPackets = int(10) #default value
-    #else:
-    #    lenghtOfPackets = int( lenghtOfPackets,16)
+    if lenghtOfPackets == 0:
+        lenghtOfPackets = int(10) #default value
+    else:
+        lenghtOfPackets
 
     # manage argument limits (0-255) (see datasheet_LoRaBench_160617_A05_FirmwareSpecification_EN __ p6 __ Command sendFrames)
     if lenghtOfPackets < 0:
@@ -113,14 +144,14 @@ def CreateFrame(sendFrame):
 
     if lenghtOfPackets > maxword:
         lenghtOfPackets = maxword
-
+    #print 'lenghtOfPackets',lenghtOfPackets
     sendFrame.append(lenghtOfPackets)
 
     # DELAY --------------------------------------------------
-    #if None ==  delay:
-    delay = int(32) #default value
-    #else:
-    #    delay = int( delay,16)
+    if delay == 0:
+        delay = int(32) #default value
+    else:
+        delay
 
     # manage argument limits (0-255) (see datasheet_LoRaBench_160617_A05_FirmwareSpecification_EN __ p6 __ Command sendFrames)
     if delay < 0:
@@ -128,7 +159,7 @@ def CreateFrame(sendFrame):
 
     if delay > maxword:
         delay = maxword
-
+    #print 'delay',delay
     sendFrame.append(delay)
 
     return sendFrame
@@ -223,7 +254,7 @@ def ReceiveFrame():
         return []
     else:
         rxbufferlen = ord(rxbuffer[0]) # byte to int conversion
-        print ""
+        #print ""
         #print ( "Answer Lenght is: " + str(rxbufferlen) )
 
     # rxbuffer is theorically the length of actual data + 3 (length itself + 2 bytes CRC)
@@ -264,8 +295,8 @@ def ReceiveFrame():
     if crcCalculate != temp:
         print (" Wrong CRC")
         return []
-    else:
-        print ""
+    #else:
+        #print ""
         #print ("Valid CRC : " + str(hexcrc))
         #print ""
 
@@ -281,15 +312,14 @@ def ReceiveFrame():
     #Check if the message inside buffer is the start TX answer or the stop TX answer
 
 
-
+    print "rxbuffer",rxbuffer
     return rxbuffer[1:-3]
     #return rxbuffer[]
 
-def TxRFframe(frameToSend, timeout = 2):
+def TxRFframe(timeout = 2):
 
-    frameToSend = CreateFrame(frameToSend)
+    frameToSend = CreateFrame()
     SendFrame(frameToSend)
-
     for i in xrange(timeout * 10):
         receiveFrame = ReceiveFrame()
         if 0 < len(receiveFrame):

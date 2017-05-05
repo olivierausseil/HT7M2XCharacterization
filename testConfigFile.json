@@ -1,21 +1,736 @@
 {
     "nom" : "GainRamp",
-
+    "frameToSend":
+    {
+        "header" : 4,
+        "spreadingFactor" : 12,
+        "power" : 14,
+        "frequencyOffset" : 5100,
+        "numberOfPackets" : 1,
+        "lenghtOfPackets" : 10,
+        "delay" : 32
+    },
     "parameter" :
     [
         {
-            "sensitivityGain" : 32,
+            "configuration" : 1,
+            "sensitivityGain" : 1,
             "sensitivityTrigger" : 0,
             "triggerTime" : 10,
-            "timeout" : 5,
-            "nbOfLoop" : 1000
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
         },
         {
-            "sensitivityGain" : 16,
+            "configuration" : 2,
+            "sensitivityGain" : 4,
             "sensitivityTrigger" : 0,
             "triggerTime" : 10,
-            "timeout" : 5,
-            "nbOfLoop" : 1000,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 3,
+            "sensitivityGain" : 8,
+            "sensitivityTrigger" : 0,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 4,
+            "sensitivityGain" : 11,
+            "sensitivityTrigger" : 0,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 5,
+            "sensitivityGain" : 14,
+            "sensitivityTrigger" : 0,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 6,
+            "sensitivityGain" : 18,
+            "sensitivityTrigger" : 0,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 7,
+            "sensitivityGain" : 21,
+            "sensitivityTrigger" : 0,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 8,
+            "sensitivityGain" : 25,
+            "sensitivityTrigger" : 0,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 9,
+            "sensitivityGain" : 28,
+            "sensitivityTrigger" : 0,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 10,
+            "sensitivityGain" : 31,
+            "sensitivityTrigger" : 0,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 11,
+            "sensitivityGain" : 1,
+            "sensitivityTrigger" : 1,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 12,
+            "sensitivityGain" :4 ,
+            "sensitivityTrigger" : 1,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 13,
+            "sensitivityGain" : 8,
+            "sensitivityTrigger" : 1,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 14,
+            "sensitivityGain" : 11,
+            "sensitivityTrigger" : 1,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 15,
+            "sensitivityGain" : 14,
+            "sensitivityTrigger" : 1,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 16,
+            "sensitivityGain" : 18,
+            "sensitivityTrigger" : 1,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 17,
+            "sensitivityGain" : 21,
+            "sensitivityTrigger" : 1,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 18,
+            "sensitivityGain" : 25,
+            "sensitivityTrigger" : 1,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 19,
+            "sensitivityGain" : 28,
+            "sensitivityTrigger" : 1,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 20,
+            "sensitivityGain" : 31,
+            "sensitivityTrigger" : 1,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 21,
+            "sensitivityGain" : 1,
+            "sensitivityTrigger" : 2,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 22,
+            "sensitivityGain" : 4,
+            "sensitivityTrigger" : 2,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 23,
+            "sensitivityGain" : 8,
+            "sensitivityTrigger" : 2,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 24,
+            "sensitivityGain" : 11,
+            "sensitivityTrigger" : 2,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 25,
+            "sensitivityGain" : 14,
+            "sensitivityTrigger" : 2,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 26,
+            "sensitivityGain" : 18,
+            "sensitivityTrigger" : 2,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 27,
+            "sensitivityGain" : 21,
+            "sensitivityTrigger" : 2,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 28,
+            "sensitivityGain" : 25,
+            "sensitivityTrigger" : 2,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 29,
+            "sensitivityGain" : 28,
+            "sensitivityTrigger" : 2,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 30,
+            "sensitivityGain" : 31,
+            "sensitivityTrigger" : 2,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 31,
+            "sensitivityGain" : 1,
+            "sensitivityTrigger" : 3,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 32,
+            "sensitivityGain" : 4,
+            "sensitivityTrigger" : 3,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 33,
+            "sensitivityGain" : 8,
+            "sensitivityTrigger" : 3,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 34,
+            "sensitivityGain" : 11,
+            "sensitivityTrigger" : 3,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 35,
+            "sensitivityGain" : 14,
+            "sensitivityTrigger" : 3,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 36,
+            "sensitivityGain" : 18,
+            "sensitivityTrigger" : 3,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 37,
+            "sensitivityGain" : 21,
+            "sensitivityTrigger" : 3,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 38,
+            "sensitivityGain" : 25,
+            "sensitivityTrigger" : 3,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 39,
+            "sensitivityGain" : 28,
+            "sensitivityTrigger" : 3,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 40,
+            "sensitivityGain" : 31,
+            "sensitivityTrigger" : 3,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 41,
+            "sensitivityGain" : 1,
+            "sensitivityTrigger" : 4,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 42,
+            "sensitivityGain" : 4,
+            "sensitivityTrigger" : 4,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 43,
+            "sensitivityGain" : 8,
+            "sensitivityTrigger" : 4,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 44,
+            "sensitivityGain" : 11,
+            "sensitivityTrigger" : 4,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 45,
+            "sensitivityGain" : 14,
+            "sensitivityTrigger" : 4,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 46,
+            "sensitivityGain" : 18,
+            "sensitivityTrigger" : 4,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 47,
+            "sensitivityGain" : 21,
+            "sensitivityTrigger" : 4,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 48,
+            "sensitivityGain" : 25,
+            "sensitivityTrigger" : 4,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 49,
+            "sensitivityGain" : 28,
+            "sensitivityTrigger" : 4,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 50,
+            "sensitivityGain" : 31,
+            "sensitivityTrigger" : 4,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 51,
+            "sensitivityGain" : 1,
+            "sensitivityTrigger" : 5,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 52,
+            "sensitivityGain" : 4,
+            "sensitivityTrigger" : 5,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 53,
+            "sensitivityGain" : 8,
+            "sensitivityTrigger" : 5,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 54,
+            "sensitivityGain" : 11,
+            "sensitivityTrigger" : 5,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 55,
+            "sensitivityGain" : 14,
+            "sensitivityTrigger" : 5,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 56,
+            "sensitivityGain" : 18,
+            "sensitivityTrigger" : 5,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 57,
+            "sensitivityGain" : 21,
+            "sensitivityTrigger" : 5,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 58,
+            "sensitivityGain" : 25,
+            "sensitivityTrigger" : 5,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 59,
+            "sensitivityGain" : 28,
+            "sensitivityTrigger" : 5,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 60,
+            "sensitivityGain" : 31,
+            "sensitivityTrigger" : 5,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 61,
+            "sensitivityGain" : 1,
+            "sensitivityTrigger" : 6,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 62,
+            "sensitivityGain" : 4,
+            "sensitivityTrigger" : 6,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 63,
+            "sensitivityGain" : 8,
+            "sensitivityTrigger" : 6,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 64,
+            "sensitivityGain" : 11,
+            "sensitivityTrigger" : 6,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 65,
+            "sensitivityGain" : 14,
+            "sensitivityTrigger" : 6,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 66,
+            "sensitivityGain" : 18,
+            "sensitivityTrigger" : 6,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 67,
+            "sensitivityGain" : 21,
+            "sensitivityTrigger" : 6,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 68,
+            "sensitivityGain" : 25,
+            "sensitivityTrigger" : 6,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 69,
+            "sensitivityGain" : 28,
+            "sensitivityTrigger" : 6,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 70,
+            "sensitivityGain" : 31,
+            "sensitivityTrigger" : 6,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 71,
+            "sensitivityGain" : 1,
+            "sensitivityTrigger" : 7,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 72,
+            "sensitivityGain" : 4,
+            "sensitivityTrigger" : 7,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 73,
+            "sensitivityGain" : 8,
+            "sensitivityTrigger" : 7,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 74,
+            "sensitivityGain" : 11,
+            "sensitivityTrigger" : 7,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 75,
+            "sensitivityGain" : 14,
+            "sensitivityTrigger" : 7,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 76,
+            "sensitivityGain" : 18,
+            "sensitivityTrigger" : 7,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 77,
+            "sensitivityGain" : 21,
+            "sensitivityTrigger" : 7,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 78,
+            "sensitivityGain" : 25,
+            "sensitivityTrigger" : 7,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 79,
+            "sensitivityGain" : 28,
+            "sensitivityTrigger" : 7,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
+        },
+        {
+            "configuration" : 80,
+            "sensitivityGain" : 31,
+            "sensitivityTrigger" : 7,
+            "triggerTime" : 10,
+            "timeout_TxFrame" : 2,
+            "timeoutPIRdetection" : 5,
+            "nbOfLoop" : 2
         }
     ]
 }

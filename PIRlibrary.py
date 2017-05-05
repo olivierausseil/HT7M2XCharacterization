@@ -22,8 +22,8 @@ def SetPIRparameters (sensitivityGain,  sensitivityTrigger, triggerTime ):
         int(sensitivityGain)
 
     # manage argument limits (0-31) because 5 bits allow (see datasheet_HT7Mx6 __ p12 _ 1. Sensor Config Register)
-    if sensitivityGain < 0:
-        sensitivityGain = 0
+    if sensitivityGain < 1:
+        sensitivityGain = 1
 
     if sensitivityGain > 31:
         sensitivityGain = 31
@@ -100,7 +100,7 @@ def SetPIRparameters (sensitivityGain,  sensitivityTrigger, triggerTime ):
     bus.write_i2c_block_data(0x4c, 1, data)
     time.sleep(0.1)
     data = bus.read_i2c_block_data(0x4c, 1, 2)
-    #print ( "sensitivity: " + str(data[1]))
+    print "sensitivity: " + str(data[1])
 
 
 def PIRdetection(timeout = 5):

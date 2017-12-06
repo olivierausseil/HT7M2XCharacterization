@@ -1,2 +1,11 @@
-PIR sensor characterization
-.
+# PIR sensor characterization.
+
+For launch program, use program CharPIR.py .
+
+Before, open the file "testConfigFile.json". Complete the file with the desired values.
+
+# Reading
+
+The RF_transmitter.py is a library to set and communicate with LoRaBench.
+The PIRlibrary.py is for set desired parameters and also see a DETECTION or NOT.
+The log.py is a library to set the level of logging.
